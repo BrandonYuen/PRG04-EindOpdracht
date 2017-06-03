@@ -1,2 +1,2 @@
 # PRG04-EindOpdracht: 
-Eindopdracht game voor programmeren 4.
+Final game for the programming04 course.
