@@ -1,6 +1,7 @@
 
 class Player extends GameObject {
 
+    private ID:number;
     private moveSpeed:number;
     private rotateSpeed:number;
     private keyLeft:boolean;
@@ -33,11 +34,18 @@ class Player extends GameObject {
         document.body.appendChild(this._div);
         this.rect = this._div.getBoundingClientRect();      
 
+        //Set middle coordinations
+        this.midx = this.x + this.rect.width / 2;
+        this.midy = this.y + this.rect.height / 2;
+        console.log("middle = "+this.midx+", "+this.midy);
+
         this.update();
     }
 
     public shoot():void{
-        this.game.addBullet(new Bullet(this.game, this);
+        this.game.addBullet(new Bullet(this.game, this));
+        this.game.addSmoke(new Smoke(this.game, this));
+        this.backwardSpeed = 3;
         console.log("shoot()");
     }
     
@@ -68,9 +76,10 @@ class Player extends GameObject {
         else{
             this.forwardSpeed *= 0.98;
         }
-
         this.x += this.forwardSpeed * Math.cos(this.angle * Math.PI / 180);
         this.y += this.forwardSpeed * Math.sin(this.angle * Math.PI / 180);
+        this.midx += this.forwardSpeed * Math.cos(this.angle * Math.PI / 180);
+        this.midy += this.forwardSpeed * Math.sin(this.angle * Math.PI / 180);
 
         //Move backwards
         if (this.keyDown == true){
@@ -85,9 +94,11 @@ class Player extends GameObject {
         else{
             this.backwardSpeed *= 0.98;
         }
-
         this.x -= this.backwardSpeed * Math.cos(this.angle * Math.PI / 180);
         this.y -= this.backwardSpeed * Math.sin(this.angle * Math.PI / 180);
+        this.midx -= this.backwardSpeed * Math.cos(this.angle * Math.PI / 180);
+        this.midy -= this.backwardSpeed * Math.sin(this.angle * Math.PI / 180);
+
 
         //Update (transform) of element
         this._div.style.transform = "translate("+this.x+"px, "+this.y+"px) rotate("+this.angle+"deg)";

@@ -1,34 +1,55 @@
+/// <reference path="gameObject.ts" />
 
-class Bullet {
+class Bullet extends GameObject {
     
     private speed:number;
-    private angle:number;
-    private _div:HTMLElement;
-    private x:number;
-    private y:number;
 
     constructor(g:Game, p:Player) {
+        super(g, p.x, p.y)
         this.angle = p.angle;
         this.speed = 10;
-
-        //let X0 = p.x + p.rect.width/4;
-        //let Y0 = p.y + p.rect.height/4;
-        //this.x = (X0 * Math.cos(this.angle)) - (Y0 * Math.sin(this.angle));
-        //this.y = (X0 * Math.sin(this.angle)) + (Y0 * Math.cos(this.angle));
-
-        this.x = Util.getMidPointX(p.rect.left, p.rect.top, p.rect.width, p.rect.height, p.angle);
-        this.y = Util.getMidPointY(p.rect.left, p.rect.top, p.rect.width, p.rect.height, p.angle);
         
         this._div = document.createElement("bullet");
         document.body.appendChild(this._div);
+        this.rect = this._div.getBoundingClientRect();
+        
+        //Get x and y coordinates of center of player
+        let middleCoords = Util.getMiddleOfRect(p.rect, p.angle);
+        this.x = middleCoords[0] - this.rect.width/2
+        this.y = middleCoords[1] - this.rect.height/2
 
-        this.move();
+        //Sound effect
+        let shootSound = new Audio();
+        shootSound.autoplay = true;
+        shootSound.src = shootSound.canPlayType('audio/mp3') ? 'media/tankShoot.wav': '';
+
+        this.update();
     }
 
-    public move():void {
+    public update():void {
         this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
         this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
-        this._div.style.transform = "translate("+this.x+"px, "+this.y+"px)  rotate("+this.angle+"deg)";
+        this._div.style.transform = "translate("+this.x+"px, "+this.y+"px) rotate("+this.angle+"deg)";
+
+        //Remove when bullet is out of screen
+        if (this.x > window.innerWidth-30 || this.x < 0){
+            this.explode();
+        }else if (this.y > window.innerHeight-30 || this.y < 0){
+            this.explode();
+        }
+    }
+
+    public explode():void{
+        //Explosion effect
+        let explodeSound = new Audio();
+        explodeSound.autoplay = true;
+        explodeSound.src = explodeSound.canPlayType('audio/mp3') ? 'media/explosion.wav': '';
+        this.delete();
+    }
+
+    public delete():void{
+        this.game.removeBullet(this);
+        document.body.removeChild(this._div);
     }
 
 }

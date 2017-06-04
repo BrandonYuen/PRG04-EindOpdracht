@@ -24,6 +24,7 @@ player {
     -webkit-transform-origin: 42px 42px; /* Safari and Chrome */
     -moz-transform-origin:50% 50%; /* Firefox */
     -o-transform-origin:50% 50%; /* Opera */
+    z-index: 100;
 }
 
 bullet {
@@ -31,7 +32,19 @@ bullet {
 	background-image: url('../textures/Edited/bulletBlueSilver_outline.png');
     transform-origin:50% 50%;
     -ms-transform-origin:50% 50%; /* IE 9 */
-    -webkit-transform-origin: 42px 42px; /* Safari and Chrome */
+    -webkit-transform-origin: 50% 50%; /* Safari and Chrome */
     -moz-transform-origin:50% 50%; /* Firefox */
     -o-transform-origin:50% 50%; /* Opera */
+    z-index: 90;
+}
+
+smoke {
+	width:102px; height:102px;
+	background-image: url('../textures/Edited/smoke_plume_small.gif');
+    transform-origin:50% 50%;
+    -ms-transform-origin:50% 50%; /* IE 9 */
+    -webkit-transform-origin: 50% 50%; /* Safari and Chrome */
+    -moz-transform-origin:50% 50%; /* Firefox */
+    -o-transform-origin:50% 50%; /* Opera */
+    z-index: 110;
 }
