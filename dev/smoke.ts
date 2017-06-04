@@ -17,7 +17,7 @@ class Smoke extends GameObject {
         console.log("this.y = "+this.y);
 
         //Timer to remove smoke after animation
-        setTimeout(function(){this.delete()}, 700);
+        setTimeout(() => this.delete(), 600);
 
         this.update();
     }

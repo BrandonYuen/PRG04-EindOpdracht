@@ -220,7 +220,7 @@ var Smoke = (function (_super) {
         _this.y = middleCoords[1] - _this.rect.height / 2;
         console.log("this.x = " + _this.x);
         console.log("this.y = " + _this.y);
-        setTimeout(function () { this.delete(); }, 700);
+        setTimeout(function () { return _this.delete(); }, 600);
         _this.update();
         return _this;
     }
