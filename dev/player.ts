@@ -30,7 +30,11 @@ class Player extends GameObject {
 
         //Set in middle of screen with random y
         this.x = this.x - this.rect.width/2;
-        this.y = Math.floor((Math.random() * window.innerHeight-300) + 200);
+        this.y = 0;
+        while (this.y < window.innerHeight * 0.1 || this.y > window.innerHeight - window.innerHeight * 0.1){
+            this.y = Math.floor((Math.random() * window.innerHeight));
+            console.log("this.y is now: "+this.y);
+        }
 
         //Set angle
         this.angle = 0;
@@ -94,10 +98,16 @@ class Player extends GameObject {
     }
     public respawn():void{
         this.x = this.respawnX;
-        this.y = Math.floor((Math.random() * window.innerHeight-300) + 200);
+        this.y = 0;
+        while (this.y < window.innerHeight * 0.1 || this.y > window.innerHeight - window.innerHeight * 0.1){
+            this.y = Math.floor((Math.random() * window.innerHeight));
+            console.log("this.y is now: "+this.y);
+        }
         this.forwardSpeed = 0;
         this.backwardSpeed = 0;
         this.angle = this.respawnAngle;
+
+        console.log("respawned: "+this.ID);
     }
     
     public update():void {

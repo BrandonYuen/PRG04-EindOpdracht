@@ -169,14 +169,14 @@ scoreboard{
 }
 
 winner{
-    width: 400px; height: 150px;
+    width: 400px; height: 125px;
     background-color: rgba(0, 0, 0, 0.5); 
     border-radius: 25px;
     position: absolute;
     top: 50%;
     left: 50%;
     margin-left: -200px;
-    margin-top: -100px;
+    margin-top: -63px;
     text-shadow: 2px 2px #000000;
     color: #ffffff;
     padding: 25px;

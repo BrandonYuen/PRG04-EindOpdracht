@@ -169,16 +169,18 @@ var Game = (function () {
         for (var _k = 0, _l = this.players; _k < _l.length; _k++) {
             var p = _l[_k];
             p.update();
-            if (p.score >= 10) {
+            if (p.score >= 1) {
                 this.showWinner(p);
             }
         }
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     Game.prototype.showWinner = function (p) {
+        console.log("ALL PLAYERS:", this.players);
         for (var _i = 0, _a = this.players; _i < _a.length; _i++) {
             var p_1 = _a[_i];
             p_1.kill();
+            console.log("killed played with ID:" + p_1.ID);
         }
         for (var _b = 0, _c = this.bullets; _b < _c.length; _b++) {
             var b = _c[_b];
@@ -219,6 +221,7 @@ var Game = (function () {
         var i = this.players.indexOf(p);
         if (i != -1) {
             this.players.splice(i, 1);
+            console.log("spliced player with ID:" + p.ID);
         }
     };
     return Game;
@@ -235,7 +238,11 @@ var Player = (function (_super) {
         document.body.appendChild(_this._div);
         _this.rect = _this._div.getBoundingClientRect();
         _this.x = _this.x - _this.rect.width / 2;
-        _this.y = Math.floor((Math.random() * window.innerHeight - 300) + 200);
+        _this.y = 0;
+        while (_this.y < window.innerHeight * 0.1 || _this.y > window.innerHeight - window.innerHeight * 0.1) {
+            _this.y = Math.floor((Math.random() * window.innerHeight));
+            console.log("this.y is now: " + _this.y);
+        }
         _this.angle = 0;
         if (_this.ID == 2) {
             _this.angle = 180;
@@ -286,10 +293,15 @@ var Player = (function (_super) {
     };
     Player.prototype.respawn = function () {
         this.x = this.respawnX;
-        this.y = Math.floor((Math.random() * window.innerHeight - 300) + 200);
+        this.y = 0;
+        while (this.y < window.innerHeight * 0.1 || this.y > window.innerHeight - window.innerHeight * 0.1) {
+            this.y = Math.floor((Math.random() * window.innerHeight));
+            console.log("this.y is now: " + this.y);
+        }
         this.forwardSpeed = 0;
         this.backwardSpeed = 0;
         this.angle = this.respawnAngle;
+        console.log("respawned: " + this.ID);
     };
     Player.prototype.update = function () {
         this.rect = this._div.getBoundingClientRect();

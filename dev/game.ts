@@ -106,7 +106,7 @@ class Game {
             p.update();
 
             //Check if winner
-            if (p.score >= 10){
+            if (p.score >= 1){
                 this.showWinner(p);
             }
         }
@@ -117,8 +117,11 @@ class Game {
     //Show a winner on screen
     private showWinner(p:Player){
         //Kill all players
+        console.log("ALL PLAYERS:",this.players);
         for (let p of this.players){
             p.kill();
+            console.log("killed played with ID:"+p.ID);
+            
         }
         //Kill all bullets
         for (let b of this.bullets){
@@ -168,6 +171,7 @@ class Game {
         let i:number = this.players.indexOf(p);
         if(i != -1) {
             this.players.splice(i, 1);
+            console.log("spliced player with ID:"+p.ID);
         }
     }
 } 
