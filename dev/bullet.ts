@@ -3,15 +3,28 @@
 class Bullet extends GameObject {
     
     private speed:number;
+    public player:Player;
 
     constructor(g:Game, p:Player) {
         super(g, p.x, p.y)
         this.angle = p.angle;
         this.speed = 10;
+        this.player = p;
         
+        //Element
         this._div = document.createElement("bullet");
         document.body.appendChild(this._div);
-        this.rect = this._div.getBoundingClientRect();
+        this.rect = this._div.getBoundingClientRect();      
+
+        //Corners
+        Util.addCollisionCorners(this._div);
+
+        //Difference between player 1 and 2
+        if (p.ID == 1){
+            this._div.classList.add('bullet1'); 
+        }else{
+            this._div.classList.add('bullet2'); 
+        }
         
         //Get x and y coordinates of center of player
         let middleCoords = Util.getMiddleOfRect(p.rect, p.angle);
@@ -44,10 +57,10 @@ class Bullet extends GameObject {
         let explodeSound = new Audio();
         explodeSound.autoplay = true;
         explodeSound.src = explodeSound.canPlayType('audio/mp3') ? 'media/explosion.wav': '';
-        this.delete();
+        this.kill();
     }
 
-    public delete():void{
+    public kill():void{
         this.game.removeBullet(this);
         document.body.removeChild(this._div);
     }

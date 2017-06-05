@@ -22,9 +22,17 @@ var Bullet = (function (_super) {
         var _this = _super.call(this, g, p.x, p.y) || this;
         _this.angle = p.angle;
         _this.speed = 10;
+        _this.player = p;
         _this._div = document.createElement("bullet");
         document.body.appendChild(_this._div);
         _this.rect = _this._div.getBoundingClientRect();
+        Util.addCollisionCorners(_this._div);
+        if (p.ID == 1) {
+            _this._div.classList.add('bullet1');
+        }
+        else {
+            _this._div.classList.add('bullet2');
+        }
         var middleCoords = Util.getMiddleOfRect(p.rect, p.angle);
         _this.x = middleCoords[0] - _this.rect.width / 2;
         _this.y = middleCoords[1] - _this.rect.height / 2;
@@ -49,9 +57,9 @@ var Bullet = (function (_super) {
         var explodeSound = new Audio();
         explodeSound.autoplay = true;
         explodeSound.src = explodeSound.canPlayType('audio/mp3') ? 'media/explosion.wav' : '';
-        this.delete();
+        this.kill();
     };
-    Bullet.prototype.delete = function () {
+    Bullet.prototype.kill = function () {
         this.game.removeBullet(this);
         document.body.removeChild(this._div);
     };
@@ -60,22 +68,48 @@ var Bullet = (function (_super) {
 var Game = (function () {
     function Game() {
         var _this = this;
-        this.player = new Player(this, 0, 0);
+        this.player1 = new Player(this, 1, 150, window.innerHeight / 2);
+        this.player2 = new Player(this, 2, window.innerWidth - 150, window.innerHeight / 2);
         this.bullets = new Array();
         this.smokes = new Array();
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Game.prototype.gameLoop = function () {
         var _this = this;
-        this.player.update();
+        this.player1.update();
+        this.player2.update();
         for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
             var b = _a[_i];
             b.update();
+            if (Util.doPolygonsIntersect(b._div, this.player1._div)) {
+                if (b.player.ID != this.player1.ID) {
+                    b.explode();
+                }
+            }
+            if (Util.doPolygonsIntersect(b._div, this.player2._div)) {
+                if (b.player.ID != this.player2.ID) {
+                    b.explode();
+                }
+            }
+            for (var _b = 0, _c = this.bullets; _b < _c.length; _b++) {
+                var b2 = _c[_b];
+                if (Util.doPolygonsIntersect(b._div, b2._div)) {
+                    if (this.bullets.indexOf(b) != this.bullets.indexOf(b2)) {
+                        b.explode();
+                        b2.explode();
+                    }
+                }
+            }
         }
-        for (var _b = 0, _c = this.smokes; _b < _c.length; _b++) {
-            var s = _c[_b];
+        for (var _d = 0, _e = this.smokes; _d < _e.length; _d++) {
+            var s = _e[_d];
             s.update();
         }
+        var collision = false;
+        if (Util.doPolygonsIntersect(this.player1._div, this.player2._div)) {
+            collision = true;
+        }
+        console.log("collision = " + collision);
         requestAnimationFrame(function () { return _this.gameLoop(); });
     };
     Game.prototype.addBullet = function (b) {
@@ -99,12 +133,32 @@ var Game = (function () {
     return Game;
 }());
 window.addEventListener("load", function () {
-    new Game();
+    var startscreen = document.createElement("startscreen");
+    document.body.appendChild(startscreen);
+    var controls = document.createElement("controls");
+    document.body.appendChild(controls);
+    var footer = document.createElement("footer");
+    document.body.appendChild(footer);
+    footer.innerHTML = "Created By: Brandon Yuen";
+    var startButton = document.createElement("startbutton");
+    document.body.appendChild(startButton);
+    startButton.innerHTML = "START";
+    startButton.addEventListener("click", function () {
+        document.body.removeChild(startscreen);
+        document.body.removeChild(controls);
+        document.body.removeChild(startButton);
+        document.body.removeChild(footer);
+        startGame();
+    });
 });
+function startGame() {
+    new Game();
+}
 var Player = (function (_super) {
     __extends(Player, _super);
-    function Player(g, x, y) {
+    function Player(g, id, x, y) {
         var _this = _super.call(this, g, x, y) || this;
+        _this.ID = id;
         _this.angle = 0;
         _this.moveSpeed = 3;
         _this.rotateSpeed = 1;
@@ -119,9 +173,18 @@ var Player = (function (_super) {
         _this._div = document.createElement("player");
         document.body.appendChild(_this._div);
         _this.rect = _this._div.getBoundingClientRect();
-        _this.midx = _this.x + _this.rect.width / 2;
-        _this.midy = _this.y + _this.rect.height / 2;
-        console.log("middle = " + _this.midx + ", " + _this.midy);
+        Util.addCollisionCorners(_this._div);
+        if (_this.ID == 1) {
+            _this._div.classList.add('player1');
+        }
+        else {
+            _this._div.classList.add('player2');
+        }
+        _this.x = _this.x - _this.rect.width / 2;
+        _this.y = _this.y - _this.rect.height / 2;
+        if (_this.ID == 2) {
+            _this.angle = 180;
+        }
         _this.update();
         return _this;
     }
@@ -172,38 +235,77 @@ var Player = (function (_super) {
         this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px) rotate(" + this.angle + "deg)";
     };
     Player.prototype.onKeyDown = function (event) {
-        switch (event.keyCode) {
-            case 37:
-                this.keyLeft = true;
-                break;
-            case 39:
-                this.keyRight = true;
-                break;
-            case 40:
-                this.keyDown = true;
-                break;
-            case 38:
-                this.keyUp = true;
-                break;
-            case 32:
-                this.shoot();
-                break;
+        if (this.ID == 1) {
+            switch (event.keyCode) {
+                case 65:
+                    this.keyLeft = true;
+                    break;
+                case 68:
+                    this.keyRight = true;
+                    break;
+                case 83:
+                    this.keyDown = true;
+                    break;
+                case 87:
+                    this.keyUp = true;
+                    break;
+                case 32:
+                    this.shoot();
+                    break;
+            }
+        }
+        else if (this.ID == 2) {
+            switch (event.keyCode) {
+                case 37:
+                    this.keyLeft = true;
+                    break;
+                case 39:
+                    this.keyRight = true;
+                    break;
+                case 40:
+                    this.keyDown = true;
+                    break;
+                case 38:
+                    this.keyUp = true;
+                    break;
+                case 80:
+                    this.shoot();
+                    break;
+            }
         }
     };
     Player.prototype.onKeyUp = function (event) {
-        switch (event.keyCode) {
-            case 37:
-                this.keyLeft = false;
-                break;
-            case 39:
-                this.keyRight = false;
-                break;
-            case 40:
-                this.keyDown = false;
-                break;
-            case 38:
-                this.keyUp = false;
-                break;
+        if (this.ID == 1) {
+            switch (event.keyCode) {
+                case 65:
+                    this.keyLeft = false;
+                    break;
+                case 68:
+                    this.keyRight = false;
+                    break;
+                case 83:
+                    this.keyDown = false;
+                    break;
+                case 87:
+                    this.keyUp = false;
+                    break;
+            }
+        }
+        else if (this.ID == 2) {
+            switch (event.keyCode) {
+                case 37:
+                    this.keyLeft = false;
+                    break;
+                case 39:
+                    this.keyRight = false;
+                    break;
+                case 40:
+                    this.keyDown = false;
+                    break;
+                case 38:
+                    this.keyUp = false;
+                    break;
+            }
         }
     };
     return Player;
@@ -220,14 +322,14 @@ var Smoke = (function (_super) {
         _this.y = middleCoords[1] - _this.rect.height / 2;
         console.log("this.x = " + _this.x);
         console.log("this.y = " + _this.y);
-        setTimeout(function () { return _this.delete(); }, 600);
+        setTimeout(function () { return _this.kill(); }, 600);
         _this.update();
         return _this;
     }
     Smoke.prototype.update = function () {
         this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
-    Smoke.prototype.delete = function () {
+    Smoke.prototype.kill = function () {
         console.log("hihi");
         this.game.removeSmoke(this);
         document.body.removeChild(this._div);
@@ -237,6 +339,32 @@ var Smoke = (function (_super) {
 var Util = (function () {
     function Util() {
     }
+    Util.getCoords = function (elem) {
+        var box = elem.getBoundingClientRect();
+        var body = document.body;
+        var docEl = document.documentElement;
+        var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+        var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+        var clientTop = docEl.clientTop || body.clientTop || 0;
+        var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+        var top = box.top + scrollTop - clientTop;
+        var left = box.left + scrollLeft - clientLeft;
+        return [Math.round(left), Math.round(top)];
+    };
+    Util.addCollisionCorners = function (_div) {
+        var leftTop = document.createElement("div");
+        leftTop.classList.add("left-top");
+        _div.appendChild(leftTop);
+        var rightTop = document.createElement("div");
+        rightTop.classList.add("right-top");
+        _div.appendChild(rightTop);
+        var leftBottom = document.createElement("div");
+        leftBottom.classList.add("left-bottom");
+        _div.appendChild(leftBottom);
+        var rightBottom = document.createElement("div");
+        rightBottom.classList.add("right-bottom");
+        _div.appendChild(rightBottom);
+    };
     Util.getMiddleOfRect = function (rect, angle) {
         var middle = new Array();
         var x0 = rect.left + rect.width / 2;
@@ -292,6 +420,57 @@ var Util = (function () {
         middle.push(y);
         return middle;
     };
+    Util.doPolygonsIntersect = function (_div1, _div2) {
+        function isUndefined(a) {
+            return a === undefined;
+        }
+        var children1 = _div1.getElementsByTagName('div');
+        var a = new Array();
+        for (var i_1 = 0; i_1 < children1.length; i_1++) {
+            a.push({ x: Util.getCoords(children1[i_1])[0], y: Util.getCoords(children1[i_1])[1] });
+        }
+        var children2 = _div2.getElementsByTagName('div');
+        var b = new Array();
+        for (var i_2 = 0; i_2 < children2.length; i_2++) {
+            b.push({ x: Util.getCoords(children2[i_2])[0], y: Util.getCoords(children2[i_2])[1] });
+        }
+        var polygons = [a, b];
+        var minA, maxA, projected, i, i1, j, minB, maxB;
+        for (i = 0; i < polygons.length; i++) {
+            var polygon = polygons[i];
+            for (i1 = 0; i1 < polygon.length; i1++) {
+                var i2 = (i1 + 1) % polygon.length;
+                var p1 = polygon[i1];
+                var p2 = polygon[i2];
+                var normal = { x: p2.y - p1.y, y: p1.x - p2.x };
+                minA = maxA = undefined;
+                for (j = 0; j < a.length; j++) {
+                    projected = normal.x * a[j].x + normal.y * a[j].y;
+                    if (isUndefined(minA) || projected < minA) {
+                        minA = projected;
+                    }
+                    if (isUndefined(maxA) || projected > maxA) {
+                        maxA = projected;
+                    }
+                }
+                minB = maxB = undefined;
+                for (j = 0; j < b.length; j++) {
+                    projected = normal.x * b[j].x + normal.y * b[j].y;
+                    if (isUndefined(minB) || projected < minB) {
+                        minB = projected;
+                    }
+                    if (isUndefined(maxB) || projected > maxB) {
+                        maxB = projected;
+                    }
+                }
+                if (maxA < minB || maxB < minA) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+    ;
     return Util;
 }());
 //# sourceMappingURL=main.js.map

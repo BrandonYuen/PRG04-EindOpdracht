@@ -17,7 +17,7 @@ class Smoke extends GameObject {
         console.log("this.y = "+this.y);
 
         //Timer to remove smoke after animation
-        setTimeout(() => this.delete(), 600);
+        setTimeout(() => this.kill(), 600);
 
         this.update();
     }
@@ -27,7 +27,7 @@ class Smoke extends GameObject {
         this._div.style.transform = "translate("+this.x+"px, "+this.y+"px)";
     }
 
-    public delete():void{
+    public kill():void{
         console.log("hihi");
         this.game.removeSmoke(this);
         document.body.removeChild(this._div);

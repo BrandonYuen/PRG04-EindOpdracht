@@ -2,7 +2,7 @@
 
 class GameObject {
     
-    protected _div: HTMLElement;
+    public _div: HTMLElement;
     protected game:Game;
     public x:number;
     public y:number;

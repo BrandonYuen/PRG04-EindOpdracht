@@ -1,7 +1,7 @@
 
 class Player extends GameObject {
 
-    private ID:number;
+    public ID:number;
     private moveSpeed:number;
     private rotateSpeed:number;
     private keyLeft:boolean;
@@ -11,10 +11,11 @@ class Player extends GameObject {
     private forwardSpeed:number;
     private backwardSpeed:number;
 
-    constructor(g:Game, x:number, y:number) {
+    constructor(g:Game, id:number, x:number, y:number) {
         super(g, x, y);
 
         //Values
+        this.ID = id;
         this.angle = 0;
         this.moveSpeed = 3;
         this.rotateSpeed = 1;
@@ -32,12 +33,26 @@ class Player extends GameObject {
         //Element
         this._div = document.createElement("player");
         document.body.appendChild(this._div);
-        this.rect = this._div.getBoundingClientRect();      
+        this.rect = this._div.getBoundingClientRect();    
 
-        //Set middle coordinations
-        this.midx = this.x + this.rect.width / 2;
-        this.midy = this.y + this.rect.height / 2;
-        console.log("middle = "+this.midx+", "+this.midy);
+        //Corners
+        Util.addCollisionCorners(this._div);
+
+        //Difference between player 1 and 2
+        if (this.ID == 1){
+            this._div.classList.add('player1'); 
+        }else{
+            this._div.classList.add('player2'); 
+        }
+
+        //Set in middle
+        this.x = this.x - this.rect.width/2;
+        this.y = this.y - this.rect.height/2;
+
+        //Rotate player 2
+        if (this.ID == 2){
+            this.angle = 180;
+        }
 
         this.update();
     }
@@ -106,40 +121,85 @@ class Player extends GameObject {
     
     private onKeyDown(event:KeyboardEvent):void {
 
-        switch(event.keyCode){
-        case 37:
-            this.keyLeft = true;
-            break;
-        case 39:
-            this.keyRight = true;
-            break;
-        case 40:
-            this.keyDown = true;
-            break;
-        case 38:
-            this.keyUp = true;
-            break;
-        case 32:
-            this.shoot();
-            break;
+        //Player 1 controls
+        if (this.ID == 1){
+            switch(event.keyCode){
+            case 65:
+                this.keyLeft = true;
+                break;
+            case 68:
+                this.keyRight = true;
+                break;
+            case 83:
+                this.keyDown = true;
+                break;
+            case 87:
+                this.keyUp = true;
+                break;
+            case 32:
+                this.shoot();
+                break;
+            }
+        }
+
+        //Player 2 controls
+        else if (this.ID == 2){
+            switch(event.keyCode){
+            case 37:
+                this.keyLeft = true;
+                break;
+            case 39:
+                this.keyRight = true;
+                break;
+            case 40:
+                this.keyDown = true;
+                break;
+            case 38:
+                this.keyUp = true;
+                break;
+            case 80:
+                this.shoot();
+                break;
+            }
         }
     }
     
     private onKeyUp(event:KeyboardEvent):void {
 
-        switch(event.keyCode){
-        case 37:
-            this.keyLeft = false;
-            break;
-        case 39:
-            this.keyRight = false;
-            break;
-        case 40:
-            this.keyDown = false;
-            break;
-        case 38:
-            this.keyUp = false;
-            break;
+        //Player 1 controls
+        if (this.ID == 1){
+            switch(event.keyCode){
+            case 65:
+                this.keyLeft = false;
+                break;
+            case 68:
+                this.keyRight = false;
+                break;
+            case 83:
+                this.keyDown = false;
+                break;
+            case 87:
+                this.keyUp = false;
+                break;
+            }
+        }
+
+        //Player 2 controls
+        else if (this.ID == 2){
+            switch(event.keyCode){
+            case 37:
+                this.keyLeft = false;
+                break;
+            case 39:
+                this.keyRight = false;
+                break;
+            case 40:
+                this.keyDown = false;
+                break;
+            case 38:
+                this.keyUp = false;
+                break;
+            }
         }
     }
 }

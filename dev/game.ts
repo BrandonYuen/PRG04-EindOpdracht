@@ -2,12 +2,14 @@
 
 class Game {
     
-    private player:Player;
+    private player1:Player;
+    private player2:Player;
     private bullets:Array<Bullet>;
     private smokes:Array<Smoke>;
  
     constructor() {
-        this.player = new Player(this,0,0);
+        this.player1 = new Player(this,1,150,window.innerHeight/2);
+        this.player2 = new Player(this,2,window.innerWidth-150,window.innerHeight/2);
         this.bullets = new Array<Bullet>();
         this.smokes = new Array<Smoke>();
         
@@ -16,15 +18,53 @@ class Game {
     
     private gameLoop(){
         //Update all game objects
-        this.player.update();
+        this.player1.update();
+        this.player2.update();
 
+        //Loop all bullets
         for (let b of this.bullets){
             b.update();
+            
+            //If bullet collides with player 1
+            if (Util.doPolygonsIntersect(b._div, this.player1._div)){
+                //If bullet is not from same player
+                if (b.player.ID != this.player1.ID){
+                    b.explode();
+                }
+            }
+            
+            //If bullet collides with player 2
+            if (Util.doPolygonsIntersect(b._div, this.player2._div)){
+                //If bullet is not from same player
+                if (b.player.ID != this.player2.ID){
+                    b.explode();
+                }
+            }
+            
+            //If bullet collides with another bullet
+            for (let b2 of this.bullets){
+                if (Util.doPolygonsIntersect(b._div, b2._div)){
+                    //If bullet is not self
+                    if ( this.bullets.indexOf(b) != this.bullets.indexOf(b2)){
+                        b.explode();
+                        b2.explode();
+                    }
+                }
+            }
         }
 
+        //Loop all smokes
         for (let s of this.smokes){
             s.update();
         }
+
+        //TODO: Collision of players
+        let collision = false;
+        if (Util.doPolygonsIntersect(this.player1._div, this.player2._div)){
+            collision = true;
+        }
+
+        console.log("collision = "+collision);
 
         requestAnimationFrame(() => this.gameLoop());
     }

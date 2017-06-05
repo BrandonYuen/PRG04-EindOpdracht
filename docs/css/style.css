@@ -18,7 +18,6 @@ body * {
 
 player {
 	width:84px; height:84px;
-	background-image: url('../textures/Edited/customTank1.png');
     transform-origin:50% 50%;
     -ms-transform-origin:50% 50%; /* IE 9 */
     -webkit-transform-origin: 42px 42px; /* Safari and Chrome */
@@ -27,15 +26,40 @@ player {
     z-index: 100;
 }
 
+.player1 {
+	background-image: url('../textures/Edited/customTank1.png');
+}
+
+.player2 {
+	background-image: url('../textures/Edited/customTank2.png');
+}
+
+.left-top { left: 0; top: 0; background: yellow; }
+.right-top {right: 0; top: 0; background: red; }
+.right-bottom { right: 0; bottom: 0; background:blue;}
+.left-bottom { left: 0; bottom: 0; background: lime; }
+
+.left-top, .right-top, .right-bottom, .left-bottom {
+    width: 10px;
+    height: 10px;
+}
+
 bullet {
 	width:34px; height:20px;
-	background-image: url('../textures/Edited/bulletBlueSilver_outline.png');
     transform-origin:50% 50%;
     -ms-transform-origin:50% 50%; /* IE 9 */
     -webkit-transform-origin: 50% 50%; /* Safari and Chrome */
     -moz-transform-origin:50% 50%; /* Firefox */
     -o-transform-origin:50% 50%; /* Opera */
     z-index: 90;
+}
+
+.bullet1 {
+	background-image: url('../textures/Edited/bulletBlueSilver_outline.png');
+}
+
+.bullet2 {
+	background-image: url('../textures/Edited/bulletRedSilver_outline.png');
 }
 
 smoke {
@@ -47,4 +71,69 @@ smoke {
     -moz-transform-origin:50% 50%; /* Firefox */
     -o-transform-origin:50% 50%; /* Opera */
     z-index: 110;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url('../media/Montserrat-Bold.ttf') format("truetype");
+}
+
+startscreen{
+    width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+startbutton{
+    width: 300px; height: 100px;
+    background-color: white; 
+    border: 3px solid #000000;
+    border-radius: 25px;
+    color: #5EB15F;
+    padding: 5px 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 70px;
+    font-family: "Montserrat", sans-serif;
+    text-shadow: 5px 5px #000000;
+    margin: 4px 2px;
+    -webkit-transition-duration: 0.2s; /* Safari */
+    transition-duration: 0.2s;
+    cursor: pointer;
+
+    top: 20%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -50px;
+}
+
+startbutton:hover {
+    background-color: #5EB15F;
+    color: white;
+}
+
+controls {
+    width: 662px; height: 378px;
+	background-image: url('../media/controls-medium.png');
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -331px;
+    margin-top: -189px;
+
+}
+
+footer {
+    width: 300px; height: 100px;
+    color: white;
+    text-shadow: 2px 2px #000000;
+    text-align: center;
+    position: absolute;
+    bottom: 10%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -50px;
+
+    font-family: "Montserrat", sans-serif;
+
 }
