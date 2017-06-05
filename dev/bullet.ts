@@ -35,28 +35,29 @@ class Bullet extends GameObject {
         let shootSound = new Audio();
         shootSound.autoplay = true;
         shootSound.src = shootSound.canPlayType('audio/mp3') ? 'media/tankShoot.wav': '';
+        shootSound.volume=.5;
 
         this.update();
     }
 
     public update():void {
+        //Update rectangle
+        this.rect = this._div.getBoundingClientRect();
+        
         this.x += this.speed * Math.cos(this.angle * Math.PI / 180);
         this.y += this.speed * Math.sin(this.angle * Math.PI / 180);
         this._div.style.transform = "translate("+this.x+"px, "+this.y+"px) rotate("+this.angle+"deg)";
 
         //Remove when bullet is out of screen
         if (this.x > window.innerWidth-30 || this.x < 0){
-            this.explode();
+            this.kill();
         }else if (this.y > window.innerHeight-30 || this.y < 0){
-            this.explode();
+            this.kill();
         }
     }
 
     public explode():void{
-        //Explosion effect
-        let explodeSound = new Audio();
-        explodeSound.autoplay = true;
-        explodeSound.src = explodeSound.canPlayType('audio/mp3') ? 'media/explosion.wav': '';
+        this.game.addExplosion(new Explosion(this.game, this.rect, this.angle));
         this.kill();
     }
 

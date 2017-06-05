@@ -40,8 +40,8 @@ player {
 .left-bottom { left: 0; bottom: 0; background: lime; }
 
 .left-top, .right-top, .right-bottom, .left-bottom {
-    width: 10px;
-    height: 10px;
+    width: 0px;
+    height: 0px;
 }
 
 bullet {
@@ -71,6 +71,17 @@ smoke {
     -moz-transform-origin:50% 50%; /* Firefox */
     -o-transform-origin:50% 50%; /* Opera */
     z-index: 110;
+}
+
+explosion {
+	width:71px; height:100px;
+	background-image: url('../textures/Edited/explosion.gif');
+    transform-origin:50% 50%;
+    -ms-transform-origin:50% 50%; /* IE 9 */
+    -webkit-transform-origin: 50% 50%; /* Safari and Chrome */
+    -moz-transform-origin:50% 50%; /* Firefox */
+    -o-transform-origin:50% 50%; /* Opera */
+    z-index: 120;
 }
 
 @font-face {
@@ -120,7 +131,6 @@ controls {
     left: 50%;
     margin-left: -331px;
     margin-top: -189px;
-
 }
 
 footer {
@@ -136,4 +146,40 @@ footer {
 
     font-family: "Montserrat", sans-serif;
 
+}
+
+scoreboard{
+    width: 300px; height: 150px;
+    top: 25px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border-radius: 25px;
+    z-index: 110;
+    padding: 25px;
+    color: #ffffff;
+    text-shadow: 2px 2px #000000;
+    font-size: 30px;
+}
+
+.p1score{
+    left: 25px;
+}
+
+.p2score{
+    right: 25px;
+}
+
+winner{
+    width: 400px; height: 150px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border-radius: 25px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -200px;
+    margin-top: -100px;
+    text-shadow: 2px 2px #000000;
+    color: #ffffff;
+    padding: 25px;
+    font-size: 30px;
+    text-align: center;
 }

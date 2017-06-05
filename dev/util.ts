@@ -121,7 +121,7 @@ class Util {
 
 
     //This function checks if 2 div elements intersect (collide) with eachother, even when rotated!
-    //NOTE: Also took way too much time (but worth it)
+    //NOTE: ALSO took way too much time (but worth it)
     public static doPolygonsIntersect (_div1:HTMLElement, _div2:HTMLElement):boolean {
 
         type Coords = {
