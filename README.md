@@ -27,4 +27,4 @@ You can **play the game** at [the github docs of this project](https://brandonyu
 ## UML
 The image below represents a Class Diagram (UML) of the game's code.
 
-![UML Class Diagram Image](media/UML.png)
+![UML Class Diagram Image](docs/media/UML.png)
