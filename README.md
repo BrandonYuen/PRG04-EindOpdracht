@@ -9,14 +9,14 @@ The game does not have a name yet, any suggestions are always welcome.
 
 ## Controls
 Player 1:
-    - **Forward/Backward:** W/S
-    - **Rotating:** A/D
-    - **Shoot:** Spacebar
+- **Forward/Backward:** W/S
+- **Rotating:** A/D
+- **Shoot:** Spacebar
 
 Player 2:
-    - **Forward/Backward:** ↑/↓
-    - **Rotating:** ←/→
-    - **Shoot:** P
+- **Forward/Backward:** ↑/↓
+- **Rotating:** ←/→
+- **Shoot:** P
 
 ## Installation / How To Play
 It's a web/typescript game, so all you need is a (chrome) browser.
