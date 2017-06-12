@@ -285,10 +285,10 @@ var Player = (function (_super) {
     };
     Player.prototype.updateScore = function () {
         if (this.ID == 1) {
-            this.game.scores[0].innerHTML = "<b>PLAYER 1</b><br>Score: " + this.score + "<br>Can Shoot: " + this.canshoot;
+            this.game.scores[0].innerHTML = "<b>PLAYER 1</b><br>Score: " + this.score + "/5<br>Can Shoot: " + this.canshoot;
         }
         else {
-            this.game.scores[1].innerHTML = "<b>PLAYER 2</b><br>Score: " + this.score + "<br>Can Shoot: " + this.canshoot;
+            this.game.scores[1].innerHTML = "<b>PLAYER 2</b><br>Score: " + this.score + "/5<br>Can Shoot: " + this.canshoot;
         }
     };
     Player.prototype.respawn = function () {
@@ -332,8 +332,18 @@ var Player = (function (_super) {
         if (collision == true) {
             this.forwardSpeed = 0;
             this.backwardSpeed = 0;
-            this.x = this.previousx;
-            this.y = this.previousy;
+        }
+        if (this.x < 0) {
+            this.x = 0;
+        }
+        else if (this.x + this.rect.width > window.innerWidth) {
+            this.x = window.innerWidth - this.rect.width;
+        }
+        if (this.y < 0) {
+            this.y = 0;
+        }
+        else if (this.y + this.rect.height > window.innerHeight) {
+            this.y = window.innerHeight - this.rect.height;
         }
         this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px) rotate(" + this.angle + "deg)";
     };
@@ -606,6 +616,27 @@ var Util = (function () {
         return true;
     };
     ;
+    Util.isOutOfScreen = function (p) {
+        var corners = p._div.getElementsByTagName('div');
+        var coords = new Array();
+        for (var i = 0; i < corners.length; i++) {
+            coords.push({ x: Util.getCoords(corners[i])[0], y: Util.getCoords(corners[i])[1] });
+        }
+        for (var _i = 0, coords_1 = coords; _i < coords_1.length; _i++) {
+            var c = coords_1[_i];
+            if (c.x > window.innerWidth || c.x < 0) {
+                console.log("Collision Left/Right:");
+                console.log("x: " + c.x);
+                return true;
+            }
+            else if (c.y > window.innerHeight || c.y < 0) {
+                console.log("Collision Top/Bottom:");
+                console.log("y: " + c.y);
+                return true;
+            }
+        }
+        return false;
+    };
     return Util;
 }());
 //# sourceMappingURL=main.js.map

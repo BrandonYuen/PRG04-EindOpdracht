@@ -91,9 +91,9 @@ class Player extends GameObject {
     public updateScore():void{
         //Player 1
         if (this.ID == 1){
-            this.game.scores[0].innerHTML = "<b>PLAYER 1</b><br>Score: "+this.score+"<br>Can Shoot: "+this.canshoot;
+            this.game.scores[0].innerHTML = "<b>PLAYER 1</b><br>Score: "+this.score+"/5<br>Can Shoot: "+this.canshoot;
         }else{
-            this.game.scores[1].innerHTML = "<b>PLAYER 2</b><br>Score: "+this.score+"<br>Can Shoot: "+this.canshoot;
+            this.game.scores[1].innerHTML = "<b>PLAYER 2</b><br>Score: "+this.score+"/5<br>Can Shoot: "+this.canshoot;
         }
     }
     public respawn():void{
@@ -149,15 +149,24 @@ class Player extends GameObject {
             }
         }
 
-        //If colliding with other player, move back
+        //If colliding with anything, set speed to 0
         if (collision == true){
             //Set forward/backspeed to 0 (make tank stand still on collision)
             this.forwardSpeed = 0;
             this.backwardSpeed = 0;
-            this.x = this.previousx;
-            this.y = this.previousy;
         }
 
+        //If colliding with game walls
+        if (this.x < 0){
+            this.x = 0;
+        }else if (this.x+this.rect.width > window.innerWidth){
+            this.x = window.innerWidth-this.rect.width;
+        }
+        if (this.y < 0){
+            this.y = 0;
+        }else if (this.y+this.rect.height > window.innerHeight){
+            this.y = window.innerHeight-this.rect.height;
+        }
 
         //Update (transform) of element
         this._div.style.transform = "translate("+this.x+"px, "+this.y+"px) rotate("+this.angle+"deg)";

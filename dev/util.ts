@@ -213,4 +213,40 @@ class Util {
         }
         return true;
     };
+
+    //This function checks if a player is out of the screen.
+    public static isOutOfScreen (p:Player):boolean {
+
+        type Coords = {
+            x: number;
+            y: number;
+        };
+
+        //Get all corner div's from the player element
+        let corners = p._div.getElementsByTagName('div');
+
+        //Get all Coords
+        var coords = new Array<Coords>();
+        for (let i = 0; i < corners.length; i++) {
+            coords.push({x: Util.getCoords(corners[i])[0], y: Util.getCoords(corners[i])[1]});
+        }
+
+        for (let c of coords){
+            //If out of screen (left or right)
+            if (c.x > window.innerWidth || c.x < 0){
+                console.log("Collision Left/Right:");
+                console.log("x: "+c.x);
+                return true;
+            }
+            //If out of screen (top or bottom)
+            else if (c.y > window.innerHeight || c.y < 0){
+                console.log("Collision Top/Bottom:");
+                console.log("y: "+c.y);
+                return true;
+            }
+        }
+
+        //If not out of screen
+        return false;
+    }
 }
