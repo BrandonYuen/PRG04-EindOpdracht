@@ -21,3 +21,5 @@ Player 2:
 ## Installation / How To Play
 It's a web/typescript game, so all you need is a (chrome) browser.
 You can **play the game** at [the github docs of this project](https://brandonyuen.github.io/PRG04-EindOpdracht/).
+
+**The first player to score 5 points wins.**
