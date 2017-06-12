@@ -10,9 +10,6 @@ class Player extends GameObject {
     private keyUp:boolean;
     private forwardSpeed:number;
     private backwardSpeed:number;
-    private previousx:number;
-    private previousy:number;
-    private previousangle:number;
     public score:number;
     private canshoot:boolean;
     private respawnX:number;
@@ -119,11 +116,6 @@ class Player extends GameObject {
 
         //Update score of player
         this.updateScore();
-
-        //Save current position
-        this.previousx = this.x;
-        this.previousy = this.y;
-        this.previousangle = this.angle;
 
         //New postion based on current foward/backward speed of player
         this.x += this.forwardSpeed * Math.cos(this.angle * Math.PI / 180);

@@ -316,9 +316,6 @@ var Player = (function (_super) {
         this.rect = this._div.getBoundingClientRect();
         this.updateSpeed();
         this.updateScore();
-        this.previousx = this.x;
-        this.previousy = this.y;
-        this.previousangle = this.angle;
         this.x += this.forwardSpeed * Math.cos(this.angle * Math.PI / 180);
         this.y += this.forwardSpeed * Math.sin(this.angle * Math.PI / 180);
         this.x -= this.backwardSpeed * Math.cos(this.angle * Math.PI / 180);
