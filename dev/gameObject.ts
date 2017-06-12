@@ -6,8 +6,6 @@ class GameObject {
     protected game:Game;
     public x:number;
     public y:number;
-    public midx:number;
-    public midy:number;
     public angle:number;
     public rect:ClientRect;
 

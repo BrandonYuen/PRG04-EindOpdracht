@@ -34,8 +34,8 @@ class Explosion extends GameObject {
     }
 
     public kill():void{
-        this.game.removeExplosion(this);
         document.body.removeChild(this._div);
+        this.game.removeExplosion(this);
     }
 
 }

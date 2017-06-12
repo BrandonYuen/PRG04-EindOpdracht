@@ -62,8 +62,8 @@ class Bullet extends GameObject {
     }
 
     public kill():void{
-        this.game.removeBullet(this);
         document.body.removeChild(this._div);
+        this.game.removeBullet(this);
     }
 
 }

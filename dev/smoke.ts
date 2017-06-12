@@ -25,8 +25,8 @@ class Smoke extends GameObject {
     }
 
     public kill():void{
-        this.game.removeSmoke(this);
         document.body.removeChild(this._div);
+        this.game.removeSmoke(this);
     }
 
 }

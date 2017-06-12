@@ -41,8 +41,8 @@ class Player extends GameObject {
         if (this.ID == 2){this.angle = 180;} // Player 2 angle
 
         //Other values
-        this.moveSpeed = 3;
-        this.rotateSpeed = 5;
+        this.moveSpeed = 5;
+        this.rotateSpeed = 3;
         this.keyLeft = false;
         this.keyRight = false;
         this.keyDown = false;
@@ -283,8 +283,8 @@ class Player extends GameObject {
     }
 
     public kill():void{
-        this.game.removePlayer(this);
         document.body.removeChild(this._div);
+        this.game.removePlayer(this);
         window.removeEventListener("keydown", (e:KeyboardEvent) => this.onKeyDown(e));
         window.removeEventListener("keyup", (e:KeyboardEvent) => this.onKeyUp(e));
     }

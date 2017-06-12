@@ -60,8 +60,8 @@ var Bullet = (function (_super) {
         this.kill();
     };
     Bullet.prototype.kill = function () {
-        this.game.removeBullet(this);
         document.body.removeChild(this._div);
+        this.game.removeBullet(this);
     };
     return Bullet;
 }(GameObject));
@@ -90,8 +90,8 @@ var Explosion = (function (_super) {
         this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
     Explosion.prototype.kill = function () {
-        this.game.removeExplosion(this);
         document.body.removeChild(this._div);
+        this.game.removeExplosion(this);
     };
     return Explosion;
 }(GameObject));
@@ -169,7 +169,7 @@ var Game = (function () {
         for (var _k = 0, _l = this.players; _k < _l.length; _k++) {
             var p = _l[_k];
             p.update();
-            if (p.score >= 1) {
+            if (p.score >= 5) {
                 this.showWinner(p);
             }
         }
@@ -177,18 +177,18 @@ var Game = (function () {
     };
     Game.prototype.showWinner = function (p) {
         console.log("ALL PLAYERS:", this.players);
-        for (var _i = 0, _a = this.players; _i < _a.length; _i++) {
-            var p_1 = _a[_i];
-            p_1.kill();
-            console.log("killed played with ID:" + p_1.ID);
+        for (var i = this.players.length - 1; i >= 0; i--) {
+            this.players[i].kill();
+            console.log("killed played with ID:" + p.ID);
         }
-        for (var _b = 0, _c = this.bullets; _b < _c.length; _b++) {
-            var b = _c[_b];
+        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
+            var b = _a[_i];
             b.kill();
         }
         var winner = document.createElement("winner");
         document.body.appendChild(winner);
         winner.innerHTML = "THE WINNER IS:<br>Player " + p.ID;
+        setTimeout(function () { location.reload(true); }, 5000);
     };
     Game.prototype.addBullet = function (b) {
         this.bullets.push(b);
@@ -247,8 +247,8 @@ var Player = (function (_super) {
         if (_this.ID == 2) {
             _this.angle = 180;
         }
-        _this.moveSpeed = 3;
-        _this.rotateSpeed = 5;
+        _this.moveSpeed = 5;
+        _this.rotateSpeed = 3;
         _this.keyLeft = false;
         _this.keyRight = false;
         _this.keyDown = false;
@@ -441,8 +441,8 @@ var Player = (function (_super) {
     };
     Player.prototype.kill = function () {
         var _this = this;
-        this.game.removePlayer(this);
         document.body.removeChild(this._div);
+        this.game.removePlayer(this);
         window.removeEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         window.removeEventListener("keyup", function (e) { return _this.onKeyUp(e); });
     };
@@ -466,8 +466,8 @@ var Smoke = (function (_super) {
         this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
     Smoke.prototype.kill = function () {
-        this.game.removeSmoke(this);
         document.body.removeChild(this._div);
+        this.game.removeSmoke(this);
     };
     return Smoke;
 }(GameObject));

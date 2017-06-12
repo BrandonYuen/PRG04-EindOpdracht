@@ -106,7 +106,7 @@ class Game {
             p.update();
 
             //Check if winner
-            if (p.score >= 1){
+            if (p.score >= 5){
                 this.showWinner(p);
             }
         }
@@ -118,8 +118,8 @@ class Game {
     private showWinner(p:Player){
         //Kill all players
         console.log("ALL PLAYERS:",this.players);
-        for (let p of this.players){
-            p.kill();
+        for (let i = this.players.length-1; i >=0; i--){
+            this.players[i].kill();
             console.log("killed played with ID:"+p.ID);
             
         }
@@ -132,6 +132,9 @@ class Game {
         let winner = document.createElement("winner");
         document.body.appendChild(winner);
         winner.innerHTML = "THE WINNER IS:<br>Player "+p.ID;
+
+        //Reload game after x time
+        setTimeout(() => {location.reload(true);}, 5000);
     }
 
     public addBullet(b:Bullet){
