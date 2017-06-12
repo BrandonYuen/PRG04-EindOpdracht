@@ -14,6 +14,9 @@ var GameObject = (function () {
         this.x = x;
         this.y = y;
     }
+    GameObject.prototype.kill = function () {
+        document.body.removeChild(this._div);
+    };
     return GameObject;
 }());
 var Bullet = (function (_super) {
@@ -60,41 +63,47 @@ var Bullet = (function (_super) {
         this.kill();
     };
     Bullet.prototype.kill = function () {
-        document.body.removeChild(this._div);
+        _super.prototype.kill.call(this);
         this.game.removeBullet(this);
     };
     return Bullet;
 }(GameObject));
-var Explosion = (function (_super) {
-    __extends(Explosion, _super);
-    function Explosion(g, rect, angle) {
+var Effect = (function (_super) {
+    __extends(Effect, _super);
+    function Effect(g, rect, angle, elementType) {
         var _this = _super.call(this, g, rect.left, rect.top) || this;
-        _this._div = document.createElement("explosion");
+        _this._div = document.createElement(elementType);
+        console.log("created new effect _div: " + _this._div);
         document.body.appendChild(_this._div);
         _this.rect = _this._div.getBoundingClientRect();
         var middleCoords = Util.getMiddleOfRect(rect, angle);
-        console.log("middleCoords = " + middleCoords);
         _this.x = middleCoords[0] - _this.rect.width / 2;
         _this.y = middleCoords[1] - _this.rect.height / 2;
-        console.log("x = " + _this.x);
-        console.log("y = " + _this.y);
+        _this.update();
+        return _this;
+    }
+    Effect.prototype.update = function () {
+        this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
+    return Effect;
+}(GameObject));
+var Explosion = (function (_super) {
+    __extends(Explosion, _super);
+    function Explosion(g, rect, angle) {
+        var _this = _super.call(this, g, rect, angle, "explosion") || this;
+        setTimeout(function () { return _this.kill(); }, 800);
         var explodeSound = new Audio();
         explodeSound.autoplay = true;
         explodeSound.src = explodeSound.canPlayType('audio/mp3') ? 'media/explosion.wav' : '';
         explodeSound.volume = .5;
-        setTimeout(function () { return _this.kill(); }, 800);
-        _this.update();
         return _this;
     }
-    Explosion.prototype.update = function () {
-        this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-    };
     Explosion.prototype.kill = function () {
-        document.body.removeChild(this._div);
+        _super.prototype.kill.call(this);
         this.game.removeExplosion(this);
     };
     return Explosion;
-}(GameObject));
+}(Effect));
 var Game = (function () {
     function Game() {
         var _this = this;
@@ -451,7 +460,7 @@ var Player = (function (_super) {
     };
     Player.prototype.kill = function () {
         var _this = this;
-        document.body.removeChild(this._div);
+        _super.prototype.kill.call(this);
         this.game.removePlayer(this);
         window.removeEventListener("keydown", function (e) { return _this.onKeyDown(e); });
         window.removeEventListener("keyup", function (e) { return _this.onKeyUp(e); });
@@ -461,26 +470,16 @@ var Player = (function (_super) {
 var Smoke = (function (_super) {
     __extends(Smoke, _super);
     function Smoke(g, rect, angle) {
-        var _this = _super.call(this, g, rect.left, rect.top) || this;
-        _this._div = document.createElement("smoke");
-        document.body.appendChild(_this._div);
-        _this.rect = _this._div.getBoundingClientRect();
-        var middleCoords = Util.getMiddleOfRect(rect, angle);
-        _this.x = middleCoords[0] - _this.rect.width / 2;
-        _this.y = middleCoords[1] - _this.rect.height / 2;
+        var _this = _super.call(this, g, rect, angle, "smoke") || this;
         setTimeout(function () { return _this.kill(); }, 600);
-        _this.update();
         return _this;
     }
-    Smoke.prototype.update = function () {
-        this._div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
-    };
     Smoke.prototype.kill = function () {
-        document.body.removeChild(this._div);
-        this.game.removeSmoke(this);
+        _super.prototype.kill.call(this);
+        this.game.removeExplosion(this);
     };
     return Smoke;
-}(GameObject));
+}(Effect));
 var Util = (function () {
     function Util() {
     }

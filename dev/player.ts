@@ -292,7 +292,7 @@ class Player extends GameObject {
     }
 
     public kill():void{
-        document.body.removeChild(this._div);
+        super.kill();
         this.game.removePlayer(this);
         window.removeEventListener("keydown", (e:KeyboardEvent) => this.onKeyDown(e));
         window.removeEventListener("keyup", (e:KeyboardEvent) => this.onKeyUp(e));

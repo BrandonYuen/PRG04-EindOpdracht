@@ -23,3 +23,8 @@ It's a web/typescript game, so all you need is a (chrome) browser.
 You can **play the game** at [the github docs of this project](https://brandonyuen.github.io/PRG04-EindOpdracht/).
 
 **The first player to score 5 points wins.**
+
+## UML
+The image below represents a Class Diagram (UML) of the game's code.
+
+![UML Class Diagram Image](media/UML.png)

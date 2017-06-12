@@ -14,4 +14,8 @@ class GameObject {
         this.x = x;
         this.y = y;
     }
+
+    public kill():void{
+        document.body.removeChild(this._div);
+    }
 }
