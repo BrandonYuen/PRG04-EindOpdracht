@@ -3,11 +3,11 @@ This is my first typescript/web game I've ever made. It's a player VS player tan
 
 The game does not have a name yet, any suggestions are always welcome.
 
-##Requirements
+## Requirements
 - 2 Players on 1 computer/keyboard
 - Chrome Browser (Haven't tested on other browsers, but they might also work)
 
-##Controls
+## Controls
 Player 1:
     - **Forward/Backward:** W/S
     - **Rotating:** A/D
@@ -18,6 +18,6 @@ Player 2:
     - **Rotating:** ←/→
     - **Shoot:** P
 
-##Installation / How To Play
+## Installation / How To Play
 It's a web/typescript game, so all you need is a (chrome) browser.
 You can **play the game** at [the github docs of this project](https://brandonyuen.github.io/PRG04-EindOpdracht/).
